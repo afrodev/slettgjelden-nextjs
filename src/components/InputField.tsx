@@ -1,3 +1,6 @@
+"use client"
+import React, { useState } from 'react';
+
 interface InputFieldProps {
     name: string;
     value: any;
@@ -7,8 +10,8 @@ interface InputFieldProps {
 const InputField: React.FC<InputFieldProps> = ({ name, value, onChange }) => {
     return (
         <div className="flex justify-between w-full">
-            <label>{name}</label>
-            <input type="text" name={name} value={value} onChange={onChange} className="w-full max-w-[9rem] "/>
+            <label htmlFor={name}>{name}</label>
+            <input type="text" id={name} name={name} value={value} onChange={onChange} className="max-w-[9rem]"/>
         </div>
     );
 }
