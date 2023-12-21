@@ -70,23 +70,22 @@ export default function MyForm() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement> ) => {
     e.preventDefault();
     if (!isNaN(formData['Beløp']) && !isNaN(formData['Rente']) && !isNaN(formData['Lønn']) && !isNaN(formData['Leiekostnader'])) {
-      const totalOwed = calculateTotalOwed(formData['Beløp'], formData['Rente']);
+      const totalFor5Years = calculate5YearTotal(formData['Beløp'], formData['Rente']);
       const incomeSurplus = formData['Lønn'] - formData['Leiekostnader'];
-      const percentageOfDebt = (formData['Beløp'] / totalOwed) * 100;
+      // This percentage of debt function is absolutely wrong, and should divide each beløp in an array of beløps for each kreditor based on a total of all their saknummere
+      // WHEN YOU GET BACK TO CODING, PLZ FOCUS ON THIS PART!!!!
+      const percentageOfDebt = totalFor5Years !== 0 ? (formData['Beløp'] / totalFor5Years) * 100 : 0;
       setOutputFields(prevState => ({ 
         ...prevState, 
-        'Totalt gjeld etter 5 år': totalOwed,
+        'Totalt gjeld etter 5 år': totalFor5Years,
         'Overskuddet i lønn': incomeSurplus,
         'Prosent av gjeld per kreditor': percentageOfDebt,
       }));
     }
   }
 
-  const calculateTotalOwed = (amount: number, interest: number) => {
-    let total = amount;
-    for (let i = 0; i < 5; i++) {
-      total += total * (interest / 100);
-    }
+  const calculate5YearTotal = (amount: number, interest: number) => {
+    let total = amount * Math.pow((1 + interest / 100), 5);
     return total;
   }
 
