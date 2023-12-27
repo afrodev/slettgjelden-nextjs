@@ -7,51 +7,60 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url = env("PSCALE_DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 model Kunde {
-  persnr               Int       @id
-  navn                 String
-  loenn                BigInt?
-  sivilstatus          String    @default("Ugift")
-  partnerLoenn         BigInt?
-  barn0_5                 Int?
-  barn6_10                 Int?
-  barn11_14                 Int?
-  barn15_18                 Int?
-  husleie              String?
-  huslaan              Huslaan[]
-  sumbarnefradrag         Int?
-  sumkostnader            Int?
-  overskuddPaaLoenn    Int?
-  totalGjeldNaa    Int?
-  kreditorer           Kreditor[]
+  persnr            Int        @id
+  navn              String
+  loenn             BigInt?
+  sivilstatus       String     @default("Ugift")
+  partnerLoenn      BigInt?
+  barn0_5           Int?
+  barn6_10          Int?
+  barn11_14         Int?
+  barn15_18         Int?
+  husleie           String?
+  huslaan           Huslaan[]
+  sumbarnefradrag   Int?
+  sumkostnader      Int?
+  overskuddPaaLoenn Int?
+  totalGjeldNaa     Int?
+  kreditorer        Kreditor[]
+}
+
+model Barnefradrag {
+  id        Int @id @default(autoincrement())
+  barn0_5   Int
+  barn6_10  Int
+  barn11_14 Int
+  barn15_18 Int
 }
 
 model Kreditor {
-  id                   Int       @id @default(autoincrement())
-  kunde                Kunde     @relation(fields: [kundeId], references: [persnr])
+  id                   Int         @id @default(autoincrement())
+  kunde                Kunde       @relation(fields: [kundeId], references: [persnr])
   kundeId              Int
   saksnumre            Saknummer[]
-  sumKreditorGjeld    Int
-  sumKreditorGjeld5Aar    Int
+  sumKreditorGjeld     Int
+  sumKreditorGjeld5Aar Int
   gjeldsprosent        Int
   maanedligBetaling    Int
 }
 
 model Saknummer {
-  id                   Int       @id @default(autoincrement())
-  beloep                Int
-  rente                Int
-  sumSak5Aar                Int
-  kreditor             Kreditor @relation(fields: [kreditorId], references: [id])
-  kreditorId           Int
+  id         Int      @id @default(autoincrement())
+  beloep     Int
+  rente      Int
+  sumSak5Aar Int
+  kreditor   Kreditor @relation(fields: [kreditorId], references: [id])
+  kreditorId Int
 }
 
 model Huslaan {
-  id                   Int       @id @default(autoincrement())
-  rente                Int
-  kunde                Kunde     @relation(fields: [kundeId], references: [persnr])
-  kundeId              Int
+  id      Int   @id @default(autoincrement())
+  beloep  Int
+  rente   Int
+  kunde   Kunde @relation(fields: [kundeId], references: [persnr])
+  kundeId Int
 }
