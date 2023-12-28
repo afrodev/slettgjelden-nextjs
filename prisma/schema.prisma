@@ -8,11 +8,14 @@ generator client {
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model Kunde {
-  persnr            Int        @id
+  persnr            BigInt        @id
   navn              String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   loenn             BigInt?
   sivilstatus       String     @default("Ugift")
   partnerLoenn      BigInt?
@@ -20,12 +23,12 @@ model Kunde {
   barn6_10          Int?
   barn11_14         Int?
   barn15_18         Int?
-  husleie           String?
+  husleie           BigInt?
   huslaan           Huslaan[]
-  sumbarnefradrag   Int?
-  sumkostnader      Int?
-  overskuddPaaLoenn Int?
-  totalGjeldNaa     Int?
+  sumbarnefradrag   BigInt?
+  sumkostnader      BigInt?
+  overskuddPaaLoenn BigInt?
+  totalGjeldNaa     BigInt?
   kreditorer        Kreditor[]
 }
 
@@ -40,27 +43,28 @@ model Barnefradrag {
 model Kreditor {
   id                   Int         @id @default(autoincrement())
   kunde                Kunde       @relation(fields: [kundeId], references: [persnr])
-  kundeId              Int
-  saksnumre            Saknummer[]
-  sumKreditorGjeld     Int
-  sumKreditorGjeld5Aar Int
+  kundeId              BigInt
+  saksnumre            Sak[]
+  sumKreditorGjeld     BigInt
+  sumKreditorGjeld5Aar BigInt
   gjeldsprosent        Int
-  maanedligBetaling    Int
+  maanedligBetaling    BigInt
 }
 
-model Saknummer {
+model Sak {
   id         Int      @id @default(autoincrement())
-  beloep     Int
+  saknr BigInt
+  beloep     BigInt
   rente      Int
-  sumSak5Aar Int
+  sumSak5Aar BigInt
   kreditor   Kreditor @relation(fields: [kreditorId], references: [id])
   kreditorId Int
 }
 
 model Huslaan {
   id      Int   @id @default(autoincrement())
-  beloep  Int
+  beloep  BigInt
   rente   Int
   kunde   Kunde @relation(fields: [kundeId], references: [persnr])
-  kundeId Int
+  kundeId BigInt
 }
