@@ -6,38 +6,6 @@ const prisma = new PrismaClient();
 
 // Here i'm adding sample data using Faker js
 
-const createKunde = async (): Promise<Kunde> => {
-  const kunde = await prisma.kunde.create({
-    data: {
-      persnr: BigInt(
-        faker.number.bigInt({ min: 10000000000n, max: 30000000000n })
-      ),
-      navn: faker.person.fullName(),
-      createdAt: faker.date.past(),
-      updatedAt: faker.date.recent(),
-      loenn: BigInt(faker.number.bigInt()),
-      sivilstatus: faker.helpers.arrayElement([
-        "Ugift",
-        "Gift",
-        "Skilt",
-        "Enke",
-      ]),
-      partnerLoenn: BigInt(faker.number.bigInt()),
-      barn0_5: faker.number.int({ min: 0, max: 5 }),
-      barn6_10: faker.number.int({ min: 0, max: 5 }),
-      barn11_14: faker.number.int({ min: 0, max: 5 }),
-      barn15_18: faker.number.int({ min: 0, max: 5 }),
-      husleie: BigInt(faker.number.bigInt({ min: 0, max: 30000 })),
-      sumbarnefradrag: BigInt(faker.number.bigInt({ min: 0, max: 30000 })),
-      sumkostnader: BigInt(faker.number.bigInt({ min: 0, max: 30000 })),
-      overskuddPaaLoenn: BigInt(faker.number.bigInt({ min: 0, max: 30000 })),
-      totalGjeldNaa: BigInt(faker.number.bigInt()),
-    },
-  });
-
-  return kunde as Kunde;
-};
-
 const createHuslaan = async (kundeId: number): Promise<Huslaan> => {
   const huslaan = await prisma.huslaan.create({
     data: {
@@ -88,7 +56,33 @@ async function main() {
   await prisma.sak.deleteMany();
   await prisma.barnefradrag.deleteMany();
 
-  const kunde = await createKunde();
+  const kunde = await prisma.kunde.create({
+    data: {
+      persnr: BigInt(
+        faker.number.bigInt({ min: 10000000000n, max: 30000000000n })
+      ),
+      navn: faker.person.fullName(),
+      createdAt: faker.date.past(),
+      updatedAt: faker.date.recent(),
+      loenn: BigInt(faker.number.bigInt()),
+      sivilstatus: faker.helpers.arrayElement([
+        "Ugift",
+        "Gift",
+        "Skilt",
+        "Enke",
+      ]),
+      partnerLoenn: BigInt(faker.number.bigInt()),
+      barn0_5: faker.number.int({ min: 0, max: 5 }),
+      barn6_10: faker.number.int({ min: 0, max: 5 }),
+      barn11_14: faker.number.int({ min: 0, max: 5 }),
+      barn15_18: faker.number.int({ min: 0, max: 5 }),
+      husleie: BigInt(faker.number.bigInt({ min: 0, max: 30000 })),
+      sumbarnefradrag: BigInt(faker.number.bigInt({ min: 0, max: 30000 })),
+      sumkostnader: BigInt(faker.number.bigInt({ min: 0, max: 30000 })),
+      overskuddPaaLoenn: BigInt(faker.number.bigInt({ min: 0, max: 30000 })),
+      totalGjeldNaa: BigInt(faker.number.bigInt()),
+    },
+  });
 
   const huslaan = await createHuslaan();
   await prisma.kunde.update({
