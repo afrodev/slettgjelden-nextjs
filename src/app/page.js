@@ -30,21 +30,36 @@ export default function Home() {
   // TODO 2: group all child ageranges into children group
   // TODO 3: group homeLoan, homeInterest, children as monthlyExpenses
 
+  const yearsInvested = 5;
+  const interestRateDecimal = cases[0].interestRatePercentage / 100;
+  const monthlyExpense = rent;
+  const surplusMonthlyIncome = monthlyIncome - monthlyExpense;
+
   // Calculate the total of all case costs
   const totalCaseCost = cases.reduce((total, currentCase) => {
     return total + parseFloat(currentCase.caseCost);
   }, 0);
 
-  const yearsInvested = 5;
-  const interestRateDecimal = cases[0].interestRatePercentage / 100;
-  const monthlyExpense = rent;
-  const surplusMonthlyIncome = monthlyIncome - monthlyExpense;
+  // Calculate the percentage of totalCaseCost for each case
+  const casePercentages = cases.map((caseItem) => {
+    return caseItem.caseCost / totalCaseCost;
+  });
+
+  const calculatedMonthlyDebtPayment = surplusMonthlyIncome - totalCaseCost;
+
+  // Calculate the surplus distributed proportionately to each case
+  const surplusDistribution = cases.map((caseItem, index) => {
+    if (totalCaseCost >= surplusMonthlyIncome) {
+      return surplusMonthlyIncome * casePercentages[index];
+    } else {
+      return calculatedMonthlyDebtPayment * casePercentages[index];
+    }
+  });
+
   const monthlyDebtPay = monthlyIncome - monthlyExpense - totalCaseCost;
 
   // Calculate monthly debt payment
-  const calculatedMonthlyDebtPayment = surplusMonthlyIncome - totalCaseCost;
 
-  // BRRRRRR NÅR DU ER TILBAKE FRA TUR  LEGG TIL RESTEN AV FELTENE FOR ALLE TALL SLIK AT DU KAN GJØRE UTREGNINEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
   return (
     <body>
       <MyForm></MyForm>
@@ -87,6 +102,9 @@ export default function Home() {
       <FinalAmount
         amount={totalCaseCost}
         text={`Din totale månedlige betaling blir ${totalCaseCost}:`}
+        breakdown={cases.map((caseItem, index) => {
+          return `Case ${index + 1}: ${surplusDistribution[index]} kr`;
+        })}
       />
     </body>
   );
