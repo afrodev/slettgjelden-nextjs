@@ -103,7 +103,13 @@ export default function Home() {
         amount={totalCaseCost}
         text={`Din totale månedlige betaling blir ${totalCaseCost}:`}
         breakdown={cases.map((caseItem, index) => {
-          return `Case ${index + 1}: ${surplusDistribution[index]} kr`;
+          const monthFactor = surplusMonthlyIncome / totalCaseCost;
+          const monthsToPayOff = 1 / monthFactor;
+          if (monthsToPayOff <= 1) {
+            return `Case ${index + 1}: ${caseItem.caseCost} kr`;
+          } else {
+            return `Case ${index + 1}: ${surplusDistribution[index]} kr`;
+          }
         })}
       />
     </body>
