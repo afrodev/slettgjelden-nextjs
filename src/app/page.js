@@ -20,11 +20,14 @@ export default function Home() {
     setCases([...cases, { caseCost: 2000, interestRatePercentage: 12 }]);
   };
 
+  // updates a specific field of a case in an array of cases.
   const updateCase = (index, field, value) => {
     const newCases = [...cases];
     newCases[index][field] = value;
     setCases(newCases);
   };
+
+  // Main todo for Sander add an array for creditors. Allow each creditor to create an array of cases
 
   //TODO 1: add state for homeloan and homeloan interest, children with different age
   // TODO 2: group all child ageranges into children group
@@ -99,9 +102,10 @@ export default function Home() {
         inputName={"rent"}
       />
 
+      {/* figure out why this shows total case cost twice */}
       <FinalAmount
         amount={totalCaseCost}
-        text={`Din totale månedlige betaling blir ${totalCaseCost}:`}
+        text={`Ditt overskudd per måned er ${surplusMonthlyIncome} og summen av dine saker er ${totalCaseCost}:`}
         breakdown={cases.map((caseItem, index) => {
           const monthFactor = surplusMonthlyIncome / totalCaseCost;
           const monthsToPayOff = 1 / monthFactor;
