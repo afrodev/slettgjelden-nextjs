@@ -5,58 +5,77 @@ import NumberInput from "@/components/NumberInput";
 import FinalAmount from "@/components/FinalAmount";
 
 export default function Home() {
-  const [caseCost, setCaseCost] = useState(2000);
-  const [interestRatePercentage, setInterestRatePercentage] = useState(12);
+  // Initialize state for creditors
+  const [creditors, setCreditors] = useState([
+    {
+      creditorName: "Creditor 1",
+      cases: [{ caseCost: 2000, interestRatePercentage: 12 }],
+    },
+  ]);
+
+  // Function to add a new creditor
+  const addCreditor = () => {
+    const newCreditorName = `Creditor ${creditors.length + 1}`;
+    setCreditors([...creditors, { creditorName: newCreditorName, cases: [] }]);
+  };
+
+  // Function to add a new case to a specific creditor
+  const addCaseToCreditor = (creditorIndex) => {
+    const newCreditors = [...creditors];
+    newCreditors[creditorIndex].cases.push({
+      caseCost: 2000,
+      interestRatePercentage: 12,
+    });
+    setCreditors(newCreditors);
+  };
+
+  // Function to update a specific case of a specific creditor
+  const updateCase = (creditorIndex, caseIndex, field, value) => {
+    const newCreditors = [...creditors];
+    newCreditors[creditorIndex].cases[caseIndex][field] = value;
+    setCreditors(newCreditors);
+  };
+
   const [monthlyIncome, setMonthlyIncome] = useState(25000); //Used in input
   const [rent, setRent] = useState(10000); // Used in input
   const [finalAge, setFinalAge] = useState(65); //hook 7 //used in input
   const [taxRatePercentage, setTaxRatePercentage] = useState(30); // used in input
 
-  const [cases, setCases] = useState([
-    { caseCost: 2000, interestRatePercentage: 12 },
-  ]);
-
-  const addCase = () => {
-    setCases([...cases, { caseCost: 2000, interestRatePercentage: 12 }]);
-  };
-
-  // updates a specific field of a case in an array of cases.
-  const updateCase = (index, field, value) => {
-    const newCases = [...cases];
-    newCases[index][field] = value;
-    setCases(newCases);
-  };
-
-  // Main todo for Sander add an array for creditors. Allow each creditor to create an array of cases
-
-  //TODO 1: add state for homeloan and homeloan interest, children with different age
-  // TODO 2: group all child ageranges into children group
-  // TODO 3: group homeLoan, homeInterest, children as monthlyExpenses
-
   const yearsInvested = 5;
-  const interestRateDecimal = cases[0].interestRatePercentage / 100;
   const monthlyExpense = rent;
   const surplusMonthlyIncome = monthlyIncome - monthlyExpense;
 
   // Calculate the total of all case costs
-  const totalCaseCost = cases.reduce((total, currentCase) => {
-    return total + parseFloat(currentCase.caseCost);
+  const totalCaseCost = creditors.reduce((total, creditor) => {
+    return (
+      total +
+      creditor.cases.reduce((total, currentCase) => {
+        return total + parseFloat(currentCase.caseCost);
+      }, 0)
+    );
   }, 0);
 
   // Calculate the percentage of totalCaseCost for each case
-  const casePercentages = cases.map((caseItem) => {
-    return caseItem.caseCost / totalCaseCost;
+  const casePercentages = creditors.map((creditor) => {
+    return creditor.cases.map((caseItem) => {
+      return caseItem.caseCost / totalCaseCost;
+    });
   });
 
   const calculatedMonthlyDebtPayment = surplusMonthlyIncome - totalCaseCost;
 
   // Calculate the surplus distributed proportionately to each case
-  const surplusDistribution = cases.map((caseItem, index) => {
-    if (totalCaseCost >= surplusMonthlyIncome) {
-      return surplusMonthlyIncome * casePercentages[index];
-    } else {
-      return calculatedMonthlyDebtPayment * casePercentages[index];
-    }
+  const surplusDistribution = creditors.map((creditor, creditorIndex) => {
+    return creditor.cases.map((caseItem, caseIndex) => {
+      if (totalCaseCost >= surplusMonthlyIncome) {
+        return surplusMonthlyIncome * casePercentages[creditorIndex][caseIndex];
+      } else {
+        return (
+          calculatedMonthlyDebtPayment *
+          casePercentages[creditorIndex][caseIndex]
+        );
+      }
+    });
   });
 
   const monthlyDebtPay = monthlyIncome - monthlyExpense - totalCaseCost;
@@ -67,26 +86,50 @@ export default function Home() {
     <body>
       <MyForm></MyForm>
 
-      {cases.map((caseItem, index) => (
-        <div key={index}>
-          <NumberInput
-            labelValue={`Saksbeløp (kr) #${index + 1}: `}
-            defaultValue={caseItem.caseCost}
-            changeEventHandler={(value) => updateCase(index, "caseCost", value)}
-            inputName={`case-cost-${index}`}
-          />
-          <NumberInput
-            labelValue={`Rente på saken (%) #${index + 1}: `}
-            defaultValue={caseItem.interestRatePercentage}
-            changeEventHandler={(value) =>
-              updateCase(index, "interestRatePercentage", value)
-            }
-            inputName={`case-interest-rate-${index}`}
-          />
+      {creditors.map((creditor, creditorIndex) => (
+        <div key={creditorIndex}>
+          <h2>{creditor.creditorName}</h2>
+          {creditor.cases.map((caseItem, caseIndex) => (
+            <div key={caseIndex}>
+              <NumberInput
+                labelValue={`Saksbeløp (kr) #${caseIndex + 1}: `}
+                defaultValue={caseItem.caseCost}
+                changeEventHandler={(value) =>
+                  updateCase(creditorIndex, caseIndex, "caseCost", value)
+                }
+                inputName={`case-cost-${caseIndex}`}
+              />
+              <NumberInput
+                labelValue={`Rente på saken (%) #${caseIndex + 1}: `}
+                defaultValue={caseItem.interestRatePercentage}
+                changeEventHandler={(value) =>
+                  updateCase(
+                    creditorIndex,
+                    caseIndex,
+                    "interestRatePercentage",
+                    value
+                  )
+                }
+                inputName={`case-interest-rate-${caseIndex}`}
+              />
+            </div>
+          ))}
+          <button
+            onClick={() => addCaseToCreditor(creditorIndex)}
+            style={{ backgroundColor: "blue", color: "white" }}
+          >
+            Add Case to {creditor.creditorName}
+          </button>
+          <hr />
         </div>
       ))}
 
-      <button onClick={addCase}>Add Case</button>
+      <button
+        onClick={addCreditor}
+        style={{ backgroundColor: "blue", color: "white" }}
+      >
+        Add Creditor
+      </button>
 
       <NumberInput
         labelValue={"Månedslønn (kr):"}
@@ -106,14 +149,18 @@ export default function Home() {
       <FinalAmount
         amount={totalCaseCost}
         text={`Ditt overskudd per måned er ${surplusMonthlyIncome} og summen av dine saker er ${totalCaseCost}:`}
-        breakdown={cases.map((caseItem, index) => {
-          const monthFactor = surplusMonthlyIncome / totalCaseCost;
-          const monthsToPayOff = 1 / monthFactor;
-          if (monthsToPayOff <= 1) {
-            return `Case ${index + 1}: ${caseItem.caseCost} kr`;
-          } else {
-            return `Case ${index + 1}: ${surplusDistribution[index]} kr`;
-          }
+        breakdown={creditors.map((creditor, creditorIndex) => {
+          return creditor.cases.map((caseItem, caseIndex) => {
+            const monthFactor = surplusMonthlyIncome / totalCaseCost;
+            const monthsToPayOff = 1 / monthFactor;
+            if (monthsToPayOff <= 1) {
+              return `Case ${caseIndex + 1}: ${caseItem.caseCost} kr`;
+            } else {
+              return `Case ${caseIndex + 1}: ${
+                surplusDistribution[creditorIndex][caseIndex]
+              } kr`;
+            }
+          });
         })}
       />
     </body>
