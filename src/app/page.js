@@ -67,8 +67,6 @@ export default function Home() {
     <body>
       <MyForm></MyForm>
 
-      const variabel = 5
-
       {cases.map((caseItem, index) => (
         <div key={index}>
           <NumberInput
