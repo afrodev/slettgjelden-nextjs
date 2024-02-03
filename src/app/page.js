@@ -29,18 +29,20 @@ export default function Home() {
     setCreditors(newCreditors);
   };
 
-  // testing commit after changing username to afrodev
-
   // Function to update a specific case of a specific creditor
   const updateCase = (creditorIndex, caseIndex, field, value) => {
     const newCreditors = [...creditors];
-    newCreditors[creditorIndex].cases[caseIndex][field] = value;
+    // Check if value is empty or not a number, and set it to 0 if true
+    const numericValue =
+      value === "" || isNaN(value) ? 0 : parseFloat(value).toFixed(2);
+    newCreditors[creditorIndex].cases[caseIndex][field] =
+      parseFloat(numericValue);
     setCreditors(newCreditors);
   };
 
   const [monthlyIncome, setMonthlyIncome] = useState(25000); //Used in input
   const [rent, setRent] = useState(10000); // Used in input
-  const [finalAge, setFinalAge] = useState(65); //hook 7 //used in input
+  const [finalAge, setFinalAge] = useState(5); //hook 7 //used in input
   const [taxRatePercentage, setTaxRatePercentage] = useState(30); // used in input
 
   const yearsInvested = 5;
@@ -151,19 +153,27 @@ export default function Home() {
       <FinalAmount
         amount={totalCaseCost}
         text={`Ditt overskudd per måned er ${surplusMonthlyIncome} og summen av dine saker er ${totalCaseCost}:`}
-        breakdown={creditors.map((creditor, creditorIndex) => {
-          return creditor.cases.map((caseItem, caseIndex) => {
-            const monthFactor = surplusMonthlyIncome / totalCaseCost;
-            const monthsToPayOff = 1 / monthFactor;
-            if (monthsToPayOff <= 1) {
-              return `Case ${caseIndex + 1}: ${caseItem.caseCost} kr`;
-            } else {
-              return `Case ${caseIndex + 1}: ${
-                surplusDistribution[creditorIndex][caseIndex]
-              } kr`;
-            }
-          });
-        })}
+        breakdown={creditors
+          .map((creditor, creditorIndex) => {
+            return {
+              creditorName: creditor.creditorName,
+              cases: creditor.cases.map((caseItem, caseIndex) => {
+                const monthFactor = surplusMonthlyIncome / totalCaseCost;
+                const monthsToPayOff = 1 / monthFactor;
+                if (monthsToPayOff <= 1) {
+                  return `Case ${caseIndex + 1}: ${caseItem.caseCost} kr`;
+                } else {
+                  return `Case ${caseIndex + 1}: ${
+                    surplusDistribution[creditorIndex][caseIndex]
+                  } kr`;
+                }
+              }),
+            };
+          })
+          .map(
+            (creditorInfo) =>
+              `${creditorInfo.creditorName}: ${creditorInfo.cases.join(", ")}`
+          )}
       />
     </body>
   );
