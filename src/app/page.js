@@ -29,6 +29,8 @@ export default function Home() {
     setCreditors(newCreditors);
   };
 
+  // testing commit after changing username to afrodev
+
   // Function to update a specific case of a specific creditor
   const updateCase = (creditorIndex, caseIndex, field, value) => {
     const newCreditors = [...creditors];
