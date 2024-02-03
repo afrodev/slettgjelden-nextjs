@@ -5,18 +5,19 @@ import NumberInput from "@/components/NumberInput";
 import FinalAmount from "@/components/FinalAmount";
 
 export default function Home() {
-  // Initialize state for creditors
   const [creditors, setCreditors] = useState([
     {
       creditorName: "Creditor 1",
       cases: [{ caseCost: 2000, interestRatePercentage: 12 }],
     },
   ]);
+  const [newCreditorName, setNewCreditorName] = useState(""); // New state for input
 
-  // Function to add a new creditor
-  const addCreditor = () => {
-    const newCreditorName = `Creditor ${creditors.length + 1}`;
-    setCreditors([...creditors, { creditorName: newCreditorName, cases: [] }]);
+  // Modified function to accept a name
+  const addCreditor = (name) => {
+    const creditorName = name.trim() || `Creditor ${creditors.length + 1}`;
+    setCreditors([...creditors, { creditorName, cases: [] }]);
+    setNewCreditorName(""); // Reset input field after adding
   };
 
   // Function to add a new case to a specific creditor
@@ -128,8 +129,15 @@ export default function Home() {
         </div>
       ))}
 
+      {/* Input for new creditor name */}
+      <input
+        type="text"
+        placeholder="Enter Creditor's Name (optional)"
+        value={newCreditorName}
+        onChange={(e) => setNewCreditorName(e.target.value)}
+      />
       <button
-        onClick={addCreditor}
+        onClick={() => addCreditor(newCreditorName)}
         style={{ backgroundColor: "blue", color: "white" }}
       >
         Add Creditor
