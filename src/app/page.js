@@ -16,7 +16,7 @@ export default function Home() {
   // Function to add a new creditor
   const addCreditor = () => {
     const newCreditorName = `Creditor ${creditors.length + 1}`;
-    setCreditors([...creditors, { creditorName: newCreditorName, cases: [] }]);
+    setCreditors([...creditors, { creditorName: newCreditorName, cases: [{ caseCost: 2000, interestRatePercentage: 12 }] }]);
   };
 
   // Function to add a new case to a specific creditor
