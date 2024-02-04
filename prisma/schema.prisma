@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model Kunde {
+  persnr            BigInt        @id
+  navn              String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  loenn             BigInt?
+  sivilstatus       String     @default("Ugift")
+  partnerLoenn      BigInt?
+  barn0_5           Int?
+  barn6_10          Int?
+  barn11_14         Int?
+  barn15_18         Int?
+  husleie           BigInt?
+  huslaan           Huslaan[]
+  sumbarnefradrag   BigInt?
+  sumkostnader      BigInt?
+  overskuddPaaLoenn BigInt?
+  totalGjeldNaa     BigInt?
+  kreditorer        Kreditor[]
+}
+
+model Barnefradrag {
+  id        Int @id @default(autoincrement())
+  barn0_5   Int
+  barn6_10  Int
+  barn11_14 Int
+  barn15_18 Int
+}
+
+model Kreditor {
+  id                   Int         @id @default(autoincrement())
+  kunde                Kunde       @relation(fields: [kundeId], references: [persnr])
+  kundeId              BigInt
+  saksnumre            Sak[]
+  sumKreditorGjeld     BigInt
+  sumKreditorGjeld5Aar BigInt
+  gjeldsprosent        Int
+  maanedligBetaling    BigInt
+}
+
+model Sak {
+  id         Int      @id @default(autoincrement())
+  saknr BigInt
+  beloep     BigInt
+  rente      Int
+  sumSak5Aar BigInt
+  kreditor   Kreditor @relation(fields: [kreditorId], references: [id])
+  kreditorId Int
+}
+
+model Huslaan {
+  id      Int   @id @default(autoincrement())
+  beloep  BigInt
+  rente   Int
+  kunde   Kunde @relation(fields: [kundeId], references: [persnr])
+  kundeId BigInt
+}
