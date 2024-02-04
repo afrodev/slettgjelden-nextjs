@@ -36,6 +36,11 @@ export default function Home() {
     setCreditors(newCreditors);
   };
 
+  // Function to calculate case cost with interest over how many years
+  const calculateCaseCostWithInterest = (caseCost, interestRatePercentage, year) => {
+    return caseCost * Math.pow((1 + interestRatePercentage / 100), year);
+  };
+
   const [monthlyIncome, setMonthlyIncome] = useState(25000); //Used in input
   const [rent, setRent] = useState(10000); // Used in input
   const [finalAge, setFinalAge] = useState(65); //hook 7 //used in input
@@ -112,6 +117,13 @@ export default function Home() {
                 }
                 inputName={`case-interest-rate-${caseIndex}`}
               />
+              <div className="mb-8 flex flex-row justify-center">
+              {Array.from({ length: yearsInvested }, (_, i) => (
+                <div key={i} className="m-4 underline bg-purple-200 w-fit text-black rounded-md px-4 mb-2">
+                  {`Year ${i + 1}: ${Math.round(calculateCaseCostWithInterest(caseItem.caseCost, caseItem.interestRatePercentage, i + 1))} total`}
+                </div>
+              ))}
+              </div>
             </div>
           ))}
           <button
