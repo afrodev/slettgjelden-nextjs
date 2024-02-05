@@ -104,55 +104,66 @@ export default function Home() {
       <MyForm></MyForm>
 
       {creditors.map((creditor, creditorIndex) => (
-        <div key={creditorIndex}>
-          <h2>{creditor.creditorName}</h2>
-          {creditor.cases.map((caseItem, caseIndex) => (
-            <div key={caseIndex}>
-              <NumberInput
-                labelValue={`Saksbeløp (kr) #${caseIndex + 1}: `}
-                defaultValue={caseItem.caseCost}
-                changeEventHandler={(value) =>
-                  updateCase(creditorIndex, caseIndex, "caseCost", value)
-                }
-                inputName={`case-cost-${caseIndex}`}
-              />
-              <NumberInput
-                labelValue={`Rente på saken (%) #${caseIndex + 1}: `}
-                defaultValue={caseItem.interestRatePercentage}
-                changeEventHandler={(value) =>
-                  updateCase(
-                    creditorIndex,
-                    caseIndex,
-                    "interestRatePercentage",
-                    value
-                  )
-                }
-                inputName={`case-interest-rate-${caseIndex}`}
-              />
-              <div className="mb-8 flex flex-row justify-center">
-                {Array.from({ length: yearsInvested }, (_, i) => (
-                  <div
-                    key={i}
-                    className="m-4 underline bg-purple-200 w-fit text-black rounded-md px-4 mb-2"
-                  >
-                    {`Year ${i + 1}: ${Math.round(
-                      calculateCaseCostWithInterest(
-                        caseItem.caseCost,
-                        caseItem.interestRatePercentage,
-                        i + 1
-                      )
-                    )} total`}
-                  </div>
-                ))}
-              </div>
+        <div key={creditorIndex} className="flex justify-betweens mb-4">
+            <div className="flex-1">
+            <h2>{creditor.creditorName}</h2>
             </div>
-          ))}
+            <div className="flex-1">
+            {creditor.cases.map((caseItem, caseIndex) => (
+              <div key={caseIndex}>
+                <NumberInput
+                  labelValue={`Saksbeløp (kr) #${caseIndex + 1}: `}
+                  defaultValue={caseItem.caseCost}
+                  changeEventHandler={(value) =>
+                    updateCase(creditorIndex, caseIndex, "caseCost", value)
+                  }
+                  inputName={`case-cost-${caseIndex}`}
+                />
+                <NumberInput
+                  labelValue={`Rente på saken (%) #${caseIndex + 1}: `}
+                  defaultValue={caseItem.interestRatePercentage}
+                  changeEventHandler={(value) =>
+                    updateCase(
+                      creditorIndex,
+                      caseIndex,
+                      "interestRatePercentage",
+                      value
+                    )
+                  }
+                  inputName={`case-interest-rate-${caseIndex}`}
+                />
+                <div className="mb-8 flex flex-row justify-center">
+                  {Array.from({ length: yearsInvested }, (_, i) => (
+                    <div
+                      key={i}
+                      className="m-4 underline bg-purple-200 w-fit text-black rounded-md px-4 mb-2"
+                    >
+                      {`Year ${i + 1}: ${Math.round(
+                        calculateCaseCostWithInterest(
+                          caseItem.caseCost,
+                          caseItem.interestRatePercentage,
+                          i + 1
+                        )
+                      )} total`}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
           <button
             onClick={() => addCaseToCreditor(creditorIndex)}
             style={{ backgroundColor: "blue", color: "white" }}
           >
             Add Case to {creditor.creditorName}
           </button>
+          </div>
+
+          {/* Calculate and display total case cost for this creditor */}
+          <div className="flex-1 text-right">
+            Total Case Cost for {creditor.creditorName}: {
+              creditor.cases.reduce((total, currentCase) => total + currentCase.caseCost, 0)
+            } kr
+          </div>
           <hr />
         </div>
       ))}
