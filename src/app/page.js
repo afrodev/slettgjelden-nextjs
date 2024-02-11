@@ -3,6 +3,9 @@ import { useState } from "react";
 import MyForm from "@/components/MyForm";
 import NumberInput from "@/components/NumberInput";
 import FinalAmount from "@/components/FinalAmount";
+import CreditorManagement from "@/components/CreditorManagement";
+// import { useState } from "react";
+// from "@/components/CreditorManagement";
 
 export default function Home() {
   const [creditors, setCreditors] = useState([
@@ -103,6 +106,7 @@ export default function Home() {
     <body>
       <MyForm></MyForm>
 
+      <CreditorManagement />
       {creditors.map((creditor, creditorIndex) => (
         <div key={creditorIndex}>
           <h2>{creditor.creditorName}</h2>

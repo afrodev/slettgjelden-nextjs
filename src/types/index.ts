@@ -11,12 +11,12 @@ export type Kunde = {
   barn11_14?: number;
   barn15_18?: number;
   husleie?: bigint;
-  huslaan: Huslaan[];
+  huslaan?: Huslaan[];
   sumbarnefradrag?: bigint;
   sumkostnader?: bigint;
   overskuddPaaLoenn?: bigint;
   totalGjeldNaa?: bigint;
-  kreditorer: Kreditor[];
+  kreditorer?: Kreditor[];
 };
 
 export type Barnefradrag = {

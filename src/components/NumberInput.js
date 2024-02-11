@@ -11,7 +11,7 @@ export default function NumberInput({
     <div className="mt-12">
       <label
         className="block text-center mb-1 text-xl font-extralight"
-        for={inputName}
+        htmlFor={inputName}
       >
         {labelValue}
       </label>
