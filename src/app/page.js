@@ -3,6 +3,7 @@ import { useState } from "react";
 import MyForm from "@/components/MyForm";
 import NumberInput from "@/components/NumberInput";
 import FinalAmount from "@/components/FinalAmount";
+import CreditorOutput from "@/components/CreditorOutput";
 
 export default function Home() {
   const [creditors, setCreditors] = useState([
@@ -158,18 +159,18 @@ export default function Home() {
             </button>
           </div>
 
-          {/* sidepanel with different calculations*/}
-          <div className="flex-1  text-center">
-            {/* Calculate and display total case cost for this creditor */}            
+          {/* sidepanel with different calculations
+          <div className="flex-1  text-center">*/}
+            {/* Calculate and display total case cost for this creditor           
             <div>
               Sum {creditor.creditorName} gjeld:
               <p className="bg-purple-200 w-fit text-black rounded-md px-4 mb-2 mx-auto">{
                   creditor.cases.reduce((total, currentCase) => total + currentCase.caseCost, 0)
                 } kr
               </p>
-            </div>
+            </div>*/}  
             {/* Calculate and display total case cost with interest for this creditor */}
-            <div>
+            {/*<div>
               Sum {creditor.creditorName} gjeld etter 5 år:
               <p className="bg-purple-200 w-fit text-black rounded-md px-4 mb-2 mx-auto">{
                   creditor.cases.reduce((total, currentCase) => {
@@ -183,7 +184,12 @@ export default function Home() {
                 } kr
               </p>
             </div>
-          </div>
+          </div>*/}
+          {/* Use the new CreditorOutput component */}
+          <CreditorOutput creditor={creditor} 
+              calculateCaseCostWithInterest={calculateCaseCostWithInterest} 
+              totalCaseCostOfAllCreditors={totalCaseCost}/>
+  
           <hr />
         </div>
       ))}
