@@ -1,28 +1,35 @@
+import { useState } from "react";
 import TextInput from "./TextInput";
-import CaseManagement from "./CaseManagement";
 
-// Add addCreditor to the props type
 interface CreditorInputProps {
   addCreditor: (name: string) => void;
 }
 
-const CreditorInput: React.FC<CreditorInputProps> = ({ addCreditor }) => {
-  // Example usage of addCreditor, adjust as needed
+interface CreditorInputProps {
+  addCreditor: (name: string) => void;
+  newCreditorName: string;
+  setNewCreditorName: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const CreditorInput: React.FC<CreditorInputProps> = ({
+  addCreditor,
+  newCreditorName,
+  setNewCreditorName,
+}) => {
   const handleAddCreditor = () => {
-    const creditorName = "New Creditor"; // This should come from an input field
-    addCreditor(creditorName);
+    addCreditor(newCreditorName);
+    setNewCreditorName(""); // Reset the input field after adding
   };
 
   return (
     <>
-      <div>CreditorInput </div>
+      <div>CreditorInput</div>
       <TextInput
         labelValue={"Kreditor navn: "}
-        changeEventHandler={() => {}}
+        changeEventHandler={(e) => setNewCreditorName(e.target.value)}
         inputName={"creditor-name"}
+        defaultValue={newCreditorName}
       />
-      {/* <CaseManagement /> */}
-      {/* Example button to add creditor, adjust as needed */}
       <button onClick={handleAddCreditor}>Add Creditor</button>
     </>
   );

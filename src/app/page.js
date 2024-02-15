@@ -7,6 +7,7 @@ import CreditorManagement from "@/components/CreditorManagement";
 // import { useState } from "react";
 // from "@/components/CreditorManagement";
 import CreditorOutput from "@/components/CreditorOutput";
+import CreditorInput from "@/components/CreditorInput";
 import { useReactToPrint } from "react-to-print";
 
 export default function Home() {
@@ -107,8 +108,11 @@ export default function Home() {
   return (
     <body>
       <h2 className="text-center m-8 text-2xl">Kreditor</h2>
-      <CreditorManagement />
-      <h2 className="text-center m-8 text-2xl">Før refaktorering:</h2>
+      <CreditorInput
+        addCreditor={addCreditor}
+        newCreditorName={newCreditorName}
+        setNewCreditorName={setNewCreditorName}
+      />
       {creditors.map((creditor, creditorIndex) => (
         <div key={creditorIndex} className="flex m-8">
           <div className="flex-1 text-center">
@@ -163,34 +167,6 @@ export default function Home() {
               Add Case to {creditor.creditorName}
             </button>
           </div>
-
-          {/* sidepanel with different calculations
-          <div className="flex-1  text-center">*/}
-          {/* Calculate and display total case cost for this creditor           
-            <div>
-              Sum {creditor.creditorName} gjeld:
-              <p className="bg-purple-200 w-fit text-black rounded-md px-4 mb-2 mx-auto">{
-                  creditor.cases.reduce((total, currentCase) => total + currentCase.caseCost, 0)
-                } kr
-              </p>
-            </div>*/}
-          {/* Calculate and display total case cost with interest for this creditor */}
-          {/*<div>
-              Sum {creditor.creditorName} gjeld etter 5 år:
-              <p className="bg-purple-200 w-fit text-black rounded-md px-4 mb-2 mx-auto">{
-                  creditor.cases.reduce((total, currentCase) => {
-                      const caseCostWithInterest = calculateCaseCostWithInterest(
-                          currentCase.caseCost,
-                          currentCase.interestRatePercentage,
-                          5
-                      );
-                      return total + Math.round(caseCostWithInterest);
-                  }, 0)
-                } kr
-              </p>
-            </div>
-          </div>*/}
-          {/* Use the new CreditorOutput component */}
           <CreditorOutput
             creditor={creditor}
             calculateCaseCostWithInterest={calculateCaseCostWithInterest}
@@ -201,19 +177,6 @@ export default function Home() {
           <hr />
         </div>
       ))}
-
-      <input
-        type="text"
-        placeholder="Enter Creditor's Name (optional)"
-        value={newCreditorName}
-        onChange={(e) => setNewCreditorName(e.target.value)}
-      />
-      <button
-        onClick={() => addCreditor(newCreditorName)}
-        style={{ backgroundColor: "blue", color: "white" }}
-      >
-        Add Creditor
-      </button>
       <h2 className="text-center m-8 text-2xl">Kunde</h2>
       <NumberInput
         labelValue={"Månedslønn (kr):"}
@@ -231,11 +194,11 @@ export default function Home() {
 
       <FinalAmount
         totalCaseCost={totalCaseCost}
-        surplusMonthlyIncome = {surplusMonthlyIncome}
-        creditors= {creditors}
-        calculateCaseCostWithInterest ={calculateCaseCostWithInterest}
-        monthlyIncome= {monthlyIncome}
-        monthlyExpense= {monthlyExpense}
+        surplusMonthlyIncome={surplusMonthlyIncome}
+        creditors={creditors}
+        calculateCaseCostWithInterest={calculateCaseCostWithInterest}
+        monthlyIncome={monthlyIncome}
+        monthlyExpense={monthlyExpense}
       />
     </body>
   );
