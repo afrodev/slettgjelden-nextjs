@@ -105,9 +105,9 @@ export default function Home() {
 
   return (
     <body>
-      <MyForm></MyForm>
-
+      <h2 className="text-center m-8 text-2xl">Kreditor</h2>
       <CreditorManagement />
+      <h2 className="text-center m-8 text-2xl">Før refaktorering:</h2>
       {creditors.map((creditor, creditorIndex) => (
         <div key={creditorIndex} className="flex m-8">
           <div className="flex-1 text-center">
@@ -213,7 +213,7 @@ export default function Home() {
       >
         Add Creditor
       </button>
-
+      <h2 className="text-center m-8 text-2xl">Kunde</h2>
       <NumberInput
         labelValue={"Månedslønn (kr):"}
         defaultValue={monthlyIncome}
