@@ -77,27 +77,27 @@ export default function Home() {
   }, 0);
 
   // Calculate the percentage of totalCaseCost for each case
-  const casePercentages = creditors.map((creditor) => {
-    return creditor.cases.map((caseItem) => {
-      return caseItem.caseCost / totalCaseCost;
-    });
-  });
+  //const casePercentages = creditors.map((creditor) => {
+  //  return creditor.cases.map((caseItem) => {
+  //    return caseItem.caseCost / totalCaseCost;
+  //  });
+  //});
 
-  const calculatedMonthlyDebtPayment = surplusMonthlyIncome - totalCaseCost;
+  //const calculatedMonthlyDebtPayment = surplusMonthlyIncome - totalCaseCost;
 
   // Calculate the surplus distributed proportionately to each case
-  const surplusDistribution = creditors.map((creditor, creditorIndex) => {
-    return creditor.cases.map((caseItem, caseIndex) => {
-      if (totalCaseCost >= surplusMonthlyIncome) {
-        return surplusMonthlyIncome * casePercentages[creditorIndex][caseIndex];
-      } else {
-        return (
-          calculatedMonthlyDebtPayment *
-          casePercentages[creditorIndex][caseIndex]
-        );
-      }
-    });
-  });
+  //const surplusDistribution = creditors.map((creditor, creditorIndex) => {
+  //  return creditor.cases.map((caseItem, caseIndex) => {
+  //    if (totalCaseCost >= surplusMonthlyIncome) {
+  //      return surplusMonthlyIncome * casePercentages[creditorIndex][caseIndex];
+  //    } else {
+  //      return (
+  //        calculatedMonthlyDebtPayment *
+  //        casePercentages[creditorIndex][caseIndex]
+  //      );
+  //    }
+  //  });
+  //});
 
   const monthlyDebtPay = monthlyIncome - monthlyExpense - totalCaseCost;
 
@@ -143,13 +143,13 @@ export default function Home() {
                       key={i}
                       className="m-4 bg-purple-200 w-fit text-black rounded-md px-4 mb-2"
                     >
-                      {`Year ${i + 1}: ${Math.round(
+                      {`År ${i + 1}: ${Math.round(
                         calculateCaseCostWithInterest(
                           caseItem.caseCost,
                           caseItem.interestRatePercentage,
                           i + 1
                         )
-                      )} total`}
+                      )}`}
                     </div>
                   ))}
                 </div>
@@ -194,13 +194,13 @@ export default function Home() {
             creditor={creditor}
             calculateCaseCostWithInterest={calculateCaseCostWithInterest}
             totalCaseCostOfAllCreditors={totalCaseCost}
+            surplusMonthlyIncome={surplusMonthlyIncome}
           />
 
           <hr />
         </div>
       ))}
 
-      {/* Input for new creditor name */}
       <input
         type="text"
         placeholder="Enter Creditor's Name (optional)"
@@ -228,31 +228,13 @@ export default function Home() {
         inputName={"rent"}
       />
 
-      {/* figure out why this shows total case cost twice */}
       <FinalAmount
-        amount={totalCaseCost}
-        text={`Ditt overskudd per måned er ${surplusMonthlyIncome} og summen av dine saker er ${totalCaseCost}:`}
-        breakdown={creditors
-          .map((creditor, creditorIndex) => {
-            return {
-              creditorName: creditor.creditorName,
-              cases: creditor.cases.map((caseItem, caseIndex) => {
-                const monthFactor = surplusMonthlyIncome / totalCaseCost;
-                const monthsToPayOff = 1 / monthFactor;
-                if (monthsToPayOff <= 1) {
-                  return `Case ${caseIndex + 1}: ${caseItem.caseCost} kr`;
-                } else {
-                  return `Case ${caseIndex + 1}: ${
-                    surplusDistribution[creditorIndex][caseIndex]
-                  } kr`;
-                }
-              }),
-            };
-          })
-          .map(
-            (creditorInfo) =>
-              `${creditorInfo.creditorName}: ${creditorInfo.cases.join(", ")}`
-          )}
+        totalCaseCost={totalCaseCost}
+        surplusMonthlyIncome = {surplusMonthlyIncome}
+        creditors= {creditors}
+        calculateCaseCostWithInterest ={calculateCaseCostWithInterest}
+        monthlyIncome= {monthlyIncome}
+        monthlyExpense= {monthlyExpense}
       />
     </body>
   );
