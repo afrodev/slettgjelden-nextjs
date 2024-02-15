@@ -74,7 +74,7 @@ export default function FinalAmount({ totalCaseCost, surplusMonthlyIncome, credi
       <div className="flex w-full justify-between text-center mt-12">
         <div className="w-1/4">Creditor:</div>
         <div className="w-1/4">Dividende(%)</div>
-        <div className="w-1/4">Kr</div>
+        <div className="w-1/4">Saksbeløp(Kr)</div>
         <div className="w-1/4">År 5</div>
 
         {/*<div className=" w-2/5 flex flex-row justify-center">
