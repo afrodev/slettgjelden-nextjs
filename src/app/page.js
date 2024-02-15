@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import MyForm from "@/components/MyForm";
 import NumberInput from "@/components/NumberInput";
 import FinalAmount from "@/components/FinalAmount";
@@ -7,6 +7,7 @@ import CreditorManagement from "@/components/CreditorManagement";
 // import { useState } from "react";
 // from "@/components/CreditorManagement";
 import CreditorOutput from "@/components/CreditorOutput";
+import { useReactToPrint } from "react-to-print";
 
 export default function Home() {
   const [creditors, setCreditors] = useState([
