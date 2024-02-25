@@ -74,12 +74,8 @@ export default function FinalAmount({
       <div className="flex w-full justify-between text-center mt-12">
         <div className="w-1/4">Creditor:</div>
         <div className="w-1/4">Dividende(%)</div>
-        <div className="w-1/4">Kr</div>
+        <div className="w-1/4">Kr i mnd</div>
         <div className="w-1/4">År 5</div>
-
-        {/*<div className=" w-2/5 flex flex-row justify-center">
-            År 1,2,3,4,5  
-        </div>*/}
       </div>
       <div className="my-4 text-center mb-20">
         {creditors.map((creditor, creditorIndex) => {
@@ -135,7 +131,9 @@ export default function FinalAmount({
                     {Math.floor((caseItem.caseCost / totalCaseCost) * 100)} %
                   </div>
                   <div className="w-1/4 border-r-2 border-gray-400">
-                    {`${caseItem.caseCost}`},-
+                    {`${Math.round(
+                      surplusDistribution[creditorIndex][caseIndex]
+                    )} kr`}
                   </div>
                   <div className="w-1/4">{`${Math.round(
                     calculateCaseCostWithInterest(
@@ -144,22 +142,6 @@ export default function FinalAmount({
                       5
                     )
                   )},- `}</div>
-                  {/*<div className="w-2/5 mb-8 flex flex-row justify-center">
-                  {Array.from({ length: 5}, (_, i) => (
-                    <div
-                      key={i}
-                      className=" text-black rounded-md px-1 "
-                    >
-                      {`${Math.round(
-                        calculateCaseCostWithInterest(
-                          caseItem.caseCost,
-                          caseItem.interestRatePercentage,
-                          i + 1
-                        )
-                      )}, `}
-                    </div>
-                  ))}
-                        </div>*/}
                 </div>
               ))}
             </div>
