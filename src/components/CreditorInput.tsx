@@ -3,10 +3,6 @@ import TextInput from "./TextInput";
 
 interface CreditorInputProps {
   addCreditor: (name: string) => void;
-}
-
-interface CreditorInputProps {
-  addCreditor: (name: string) => void;
   newCreditorName: string;
   setNewCreditorName: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -25,9 +21,9 @@ const CreditorInput: React.FC<CreditorInputProps> = ({
     <>
       <div>CreditorInput</div>
       <TextInput
-        labelValue={"Kreditor navn: "}
-        changeEventHandler={(e) => setNewCreditorName(e.target.value)}
-        inputName={"creditor-name"}
+        labelValue="Kreditor navn: "
+        changeEventHandler={setNewCreditorName}
+        inputName="creditor-name"
         defaultValue={newCreditorName}
       />
       <button onClick={handleAddCreditor}>Add Creditor</button>

@@ -19,14 +19,19 @@ export default function Home() {
   ]);
   const [newCreditorName, setNewCreditorName] = useState(""); // New state for input
 
-  // Function to add a new creditor Modified function to accept a name
+  /**
+   * Adds a new creditor to the list of creditors.
+   * If a name is provided, a new creditor with that name is added.
+   * If no name is provided or the name is empty, a default name is generated.
+   * The new creditor includes an initial case with a cost of 2000 and an interest rate of 12%.
+   * Updates the state to include the newly added creditor.
+   */
   const addCreditor = (name) => {
-    const creditorName = name.trim() || `Creditor ${creditors.length + 1}`;
-    setCreditors([
-      ...creditors,
-      { creditorName, cases: [{ caseCost: 2000, interestRatePercentage: 12 }] },
-    ]);
-    setNewCreditorName(""); // Reset input field after adding
+    const newCreditor = {
+      creditorName: name.trim() || `Creditor ${creditors.length + 1}`,
+      cases: [{ caseCost: 2000, interestRatePercentage: 12 }],
+    };
+    setCreditors([...creditors, newCreditor]);
   };
 
   // Function to add a new case to a specific creditor
@@ -180,6 +185,12 @@ export default function Home() {
       <h2 className="text-center m-8 text-2xl">Kunde</h2>
       <NumberInput
         labelValue={"Månedslønn (kr):"}
+        defaultValue={monthlyIncome}
+        changeEventHandler={setMonthlyIncome}
+        inputName={"monthly-income"}
+      />
+      <NumberInput
+        labelValue={"Ekstra penger (kr):"}
         defaultValue={monthlyIncome}
         changeEventHandler={setMonthlyIncome}
         inputName={"monthly-income"}
