@@ -3,11 +3,12 @@ import { useState, useRef } from "react";
 import MyForm from "@/components/MyForm";
 import NumberInput from "@/components/NumberInput";
 import FinalAmount from "@/components/FinalAmount";
+import FinalAmountMini from "@/components/FinalAmountMini"
 import CreditorManagement from "@/components/CreditorManagement";
 // import { useState } from "react";
 // from "@/components/CreditorManagement";
 import CreditorOutput from "@/components/CreditorOutput";
-import { useReactToPrint } from "react-to-print";
+//import { useReactToPrint } from "react-to-print";
 
 export default function Home() {
   const [creditors, setCreditors] = useState([
@@ -230,6 +231,14 @@ export default function Home() {
       />
 
       <FinalAmount
+        totalCaseCost={totalCaseCost}
+        surplusMonthlyIncome = {surplusMonthlyIncome}
+        creditors= {creditors}
+        calculateCaseCostWithInterest ={calculateCaseCostWithInterest}
+        monthlyIncome= {monthlyIncome}
+        monthlyExpense= {monthlyExpense}
+      />
+      <FinalAmountMini
         totalCaseCost={totalCaseCost}
         surplusMonthlyIncome = {surplusMonthlyIncome}
         creditors= {creditors}

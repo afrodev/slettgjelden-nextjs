@@ -93,19 +93,19 @@ export default function FinalAmount({ totalCaseCost, surplusMonthlyIncome, credi
             return total + caseCostWithInterest;
           }, 0);
           return (
-          <div key={creditorIndex} className="flex flex-col justify-between mb-12">
+          <div key={creditorIndex} className="flex flex-col justify-between ">
             <div className="flex justify-around w-full border-b-2 border-gray-400">
-              <div className="w-1/4 border-r-2 border-gray-400">{creditor.creditorName}</div>
-              <div className="w-1/4 border-r-2 border-gray-400">{Math.floor(creditor.cases.reduce((total, currentCase) => total + currentCase.caseCost, 0) / totalCaseCost * 100)} %</div>
-              <div className="w-1/4 border-r-2 border-gray-400">{creditor.cases.reduce((total, currentCase) => total + currentCase.caseCost, 0)},-</div>
-              <div className="w-1/4">{Math.round(totalCostWithInterest)},-</div>
+              <div className="w-1/4 border border-gray-400">{creditor.creditorName}</div>
+              <div className="w-1/4 border border-gray-400">{Math.floor(creditor.cases.reduce((total, currentCase) => total + currentCase.caseCost, 0) / totalCaseCost * 100)} %</div>
+              <div className="w-1/4 border border-gray-400">{creditor.cases.reduce((total, currentCase) => total + currentCase.caseCost, 0)},-</div>
+              <div className="w-1/4 border border-gray-400">{Math.round(totalCostWithInterest)},-</div>
             </div>
             {creditor.cases.map((caseItem, caseIndex) => (
               <div key={caseIndex} className="flex justify-between w-full">
-                <div className="w-1/4 border-r-2 border-gray-400" style={{ paddingLeft: '20px' }}>{`Case ${caseIndex + 1}`}</div>
-                <div className="w-1/4 border-r-2 border-gray-400">{Math.floor(caseItem.caseCost / totalCaseCost * 100)} %</div>
-                <div className="w-1/4 border-r-2 border-gray-400">{`${caseItem.caseCost}`},-</div>
-                <div className="w-1/4">{`${Math.round(
+                <div className="w-1/4 border border-gray-400" style={{ paddingLeft: '20px' }}>{`Case ${caseIndex + 1}`}</div>
+                <div className="w-1/4 border border-gray-400">{Math.floor(caseItem.caseCost / totalCaseCost * 100)} %</div>
+                <div className="w-1/4 border border-gray-400">{`${caseItem.caseCost}`},-</div>
+                <div className="w-1/4 border border-gray-400">{`${Math.round(
                         calculateCaseCostWithInterest(
                           caseItem.caseCost,
                           caseItem.interestRatePercentage,
